@@ -50,6 +50,10 @@ uv sync --extra cpu    # CPU-only
 
 The PyTorch backend extras are mutually exclusive. The `cu128` extra uses the PyTorch CUDA 12.8 index, the `rocm` extra uses the PyTorch ROCm index on Linux, and the `cpu` extra uses the CPU PyTorch index on Linux/Windows.
 
+After syncing with a backend extra, use `uv run --no-sync ...` for the commands
+below to avoid re-syncing the environment without the selected PyTorch backend
+extra.
+
 By default, the server downloads [`Aratako/Irodori-TTS-500M-v3`](https://huggingface.co/Aratako/Irodori-TTS-500M-v3) from Hugging Face when the model is first loaded. To use a local checkpoint, set:
 
 ```bash
@@ -59,14 +63,10 @@ IRODORI_CHECKPOINT=/path/to/model.safetensors
 ## Running
 
 ```bash
-uv run python -m irodori_openai_tts --host 0.0.0.0 --port 8088
+uv run --no-sync python -m irodori_openai_tts --host 0.0.0.0 --port 8088
 ```
 
-For ROCm:
-
-```bash
-uv run --extra rocm python -m irodori_openai_tts --host 0.0.0.0 --port 8088
-```
+This uses the PyTorch backend selected during `uv sync`.
 
 Open the health endpoint:
 
